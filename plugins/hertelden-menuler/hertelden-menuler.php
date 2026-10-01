@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hertelden Menüler
  * Description: Footer ve Ana navigasyon menülerini (L1+L2+L3) oluşturur; Max Mega Menu ayarlarını otomatik yapar.
- * Version: 2.0
+ * Version: 2.1
  * Author: Hertelden Shop
  */
 
@@ -19,13 +19,25 @@ function hm_admin_page() {
     if ( isset( $_POST['hm_run'] ) && check_admin_referer( 'hm_run_action' ) ) {
         $result = hm_create_menus();
     }
+    if ( isset( $_POST['hm_mega'] ) && check_admin_referer( 'hm_mega_action' ) ) {
+        $result = hm_apply_megamenu_to_current_menu();
+    }
     ?>
     <div class="wrap">
         <h1>Hertelden Menüler</h1>
-        <p>Footer ve Ana navigasyon menülerini (L1 + L2 + L3 alt kategoriler) oluşturur. Max Mega Menu ayarlarını otomatik yapar.</p>
+
+        <h2>1. Menüleri Oluştur</h2>
+        <p>Footer ve Ana navigasyon menülerini (L1 + L2 + L3) oluşturur veya günceller.</p>
         <form method="post"><?php wp_nonce_field( 'hm_run_action' ); ?>
             <p><input type="submit" name="hm_run" class="button button-primary button-large" value="Menüleri Oluştur / Güncelle"></p>
         </form>
+
+        <h2>2. Max Mega Menu Ayarlarını Uygula</h2>
+        <p>Mevcut Ana Menü'deki tüm L1 öğelerine Max Mega Menu "full-width panel" ayarını yazar. Önce Menüyü Oluştur, sonra bu butona bas.</p>
+        <form method="post"><?php wp_nonce_field( 'hm_mega_action' ); ?>
+            <p><input type="submit" name="hm_mega" class="button button-secondary button-large" value="Max Mega Menu Ayarlarını Uygula"></p>
+        </form>
+
         <?php if ( $result ) echo $result; ?>
     </div>
     <?php
@@ -170,20 +182,88 @@ function hm_create_menus() {
 }
 
 /**
- * Max Mega Menu — L1 nav menu item'larına full-width mega panel meta'sı yaz.
+ * Max Mega Menu — menü oluşturma sırasında meta yaz (fallback).
  */
 function hm_setup_megamenu( array $l1_item_ids ) {
     $count = 0;
     foreach ( $l1_item_ids as $item_id ) {
-        $updated = update_post_meta( $item_id, '_megamenu', [
-            'enabled'        => 'true',
-            'panel_width'    => 'full_width',
-            'panel_position' => 'left',
-            'panel_columns_mobile_breakpoint' => '768',
-        ] );
-        if ( $updated !== false ) $count++;
+        hm_write_megamenu_meta( $item_id );
+        $count++;
     }
     return $count;
+}
+
+/**
+ * Max Mega Menu — mevcut Ana Menü'den L1 öğeleri okuyarak meta yazar.
+ * "Max Mega Menu Ayarlarını Uygula" butonuna bağlı.
+ */
+function hm_apply_megamenu_to_current_menu() {
+    $menu = wp_get_nav_menu_object( 'Ana Menü' );
+    if ( ! $menu ) {
+        return '<div class="notice notice-error"><p>Ana Menü bulunamadı. Önce menüyü oluştur.</p></div>';
+    }
+
+    $items = wp_get_nav_menu_items( $menu->term_id, [ 'update_post_term_cache' => false ] );
+    if ( ! $items ) {
+        return '<div class="notice notice-error"><p>Menü öğesi bulunamadı.</p></div>';
+    }
+
+    $l1_count = 0;
+    foreach ( $items as $item ) {
+        if ( (int) $item->menu_item_parent === 0 ) {
+            hm_write_megamenu_meta( $item->ID );
+            $l1_count++;
+        }
+    }
+
+    // Max Mega Menu tema ayarı — "Birincil menü" lokasyonu için mega etkin
+    hm_ensure_megamenu_location( $menu->term_id );
+
+    return '<div class="notice notice-success"><p><strong>Tamamlandı!</strong> ' . $l1_count . ' L1 öğesine Max Mega Menu full-width panel ayarı yazıldı.</p></div>';
+}
+
+/**
+ * Tek bir nav menu item'ına Max Mega Menu meta'sını yaz.
+ */
+function hm_write_megamenu_meta( $item_id ) {
+    // Mevcut ayarları oku, yoksa boş array
+    $existing = get_post_meta( $item_id, '_megamenu', true );
+    if ( ! is_array( $existing ) ) $existing = [];
+
+    $settings = array_merge( $existing, [
+        'enabled'                          => 'true',
+        'panel_width'                      => 'full_width',
+        'panel_position'                   => 'left',
+        'panel_columns_mobile_breakpoint'  => '768',
+        'hide_arrow'                       => false,
+        'disable_link'                     => false,
+        'item_align'                       => 'left',
+    ] );
+
+    update_post_meta( $item_id, '_megamenu', $settings );
+}
+
+/**
+ * Max Mega Menu'nün menu_locations option'ına bu menüyü ekle.
+ */
+function hm_ensure_megamenu_location( $menu_id ) {
+    $option_key = 'megamenu_settings';
+    $settings   = get_option( $option_key, [] );
+
+    // Tüm kayıtlı location'ları tara, "primary" veya "Birincil" içereni bul
+    $nav_locs = get_registered_nav_menus();
+    foreach ( array_keys( $nav_locs ) as $loc ) {
+        $assigned = get_nav_menu_locations();
+        if ( isset( $assigned[ $loc ] ) && (int) $assigned[ $loc ] === (int) $menu_id ) {
+            if ( ! isset( $settings['locations'][ $loc ] ) ) {
+                $settings['locations'][ $loc ] = [ 'enabled' => 1 ];
+            } else {
+                $settings['locations'][ $loc ]['enabled'] = 1;
+            }
+        }
+    }
+
+    update_option( $option_key, $settings );
 }
 
 function hm_clear_menu( $menu_id ) {
