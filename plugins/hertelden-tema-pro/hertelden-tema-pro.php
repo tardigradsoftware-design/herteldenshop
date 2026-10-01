@@ -147,6 +147,19 @@ a { text-decoration: none; color: inherit; }
   align-items: center !important;
   height: 64px !important;
   gap: 24px !important;
+  overflow: visible !important; /* dropdown'ların kırpılmaması için */
+}
+
+/* Dropdown'ın çıkabileceği tüm parent'lar overflow:visible olmalı */
+#masthead,
+.site-header,
+.ast-primary-header-bar,
+.main-header-bar,
+.ast-site-navigation-wrap,
+.ast-main-header-nav-wrap,
+.main-navigation,
+.ast-nav-menu > li {
+  overflow: visible !important;
 }
 
 /* Logo sola */
