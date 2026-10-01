@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Hertelden Tema Pro
- * Description: Global e-ticaret tasarım sistemi — tüm sayfa türleri için eksiksiz CSS ve WooCommerce entegrasyonu.
- * Version: 1.0
+ * Description: Global e-ticaret tasarım sistemi — header, navigasyon, ürünler, kategori, checkout, footer.
+ * Version: 1.1
  * Author: Hertelden Shop
  */
 
@@ -12,107 +12,122 @@ add_action( 'wp_head', 'htp_fonts', 1 );
 function htp_fonts() {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
-    echo '<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">' . "\n";
+    echo '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">' . "\n";
 }
 
 add_action( 'wp_head', 'htp_css', 100 );
 function htp_css() { ?>
 <style id="htp">
 
-/* ═══════════════════════════════════════════════
-   DESIGN TOKENS
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════ */
 :root {
-  --c-white:     #FFFFFF;
-  --c-bg:        #F5F5F5;
-  --c-surface:   #FFFFFF;
-  --c-border:    #E5E5E5;
-  --c-border-2:  #D4D4D4;
-  --c-ink:       #111111;
-  --c-ink-2:     #525252;
-  --c-ink-3:     #A3A3A3;
-  --c-accent:    #E84D00;
-  --c-accent-h:  #C44000;
-  --c-accent-bg: #FFF4EF;
-  --c-sale:      #CC0000;
-  --c-success:   #16A34A;
-  --c-star:      #F59E0B;
-
-  --r-sm:   4px;
-  --r-md:   8px;
-  --r-lg:   12px;
-  --r-xl:   16px;
-  --r-full: 999px;
-
-  --shadow-sm:  0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:  0 4px 12px rgba(0,0,0,.10), 0 2px 4px rgba(0,0,0,.06);
-  --shadow-lg:  0 8px 24px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
-  --shadow-xl:  0 16px 48px rgba(0,0,0,.14);
-
-  --t-fast:   150ms ease;
-  --t-base:   200ms ease;
-  --t-slow:   300ms ease;
-
-  --w-content: 1280px;
-  --gap:       24px;
+  --c-white:    #FFFFFF;
+  --c-bg:       #F5F5F5;
+  --c-border:   #E5E5E5;
+  --c-border-2: #CCCCCC;
+  --c-ink:      #111111;
+  --c-ink-2:    #555555;
+  --c-ink-3:    #999999;
+  --c-accent:   #E84D00;
+  --c-accent-h: #C44000;
+  --c-sale:     #CC0000;
+  --c-success:  #16A34A;
+  --c-star:     #F59E0B;
+  --r:          8px;
+  --r-sm:       4px;
+  --r-lg:       12px;
+  --sh-sm:  0 1px 4px rgba(0,0,0,.07);
+  --sh-md:  0 4px 16px rgba(0,0,0,.10);
+  --sh-lg:  0 8px 32px rgba(0,0,0,.12);
 }
 
-/* ═══════════════════════════════════════════════
-   GLOBAL RESET & TYPOGRAPHY
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   GLOBAL RESET
+═══════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; }
 
+html { overflow-x: hidden; }
+
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
   font-size: 14px !important;
-  line-height: 1.6 !important;
   color: var(--c-ink) !important;
   background: var(--c-bg) !important;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,h2,h3,h4,h5,h6 {
   font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
-  line-height: 1.25 !important;
   color: var(--c-ink) !important;
   letter-spacing: -.02em;
+  line-height: 1.2 !important;
 }
 
-a { color: var(--c-ink); text-decoration: none; }
-a:hover { color: var(--c-accent); }
+a { text-decoration: none; color: inherit; }
 
-img { max-width: 100%; height: auto; display: block; }
-
-/* ═══════════════════════════════════════════════
-   LAYOUT WRAPPER
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   ASTRA CONTAINER — TAM GENİŞLİK
+═══════════════════════════════════════ */
+/* Astra'nın tüm container kısıtlamalarını kaldır */
 .ast-container,
-.site-content .ast-container {
-  max-width: var(--w-content) !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+#ast-hf-menu-1 .ast-container,
+.main-header-bar .ast-container,
+.ast-above-header-wrap .ast-container,
+.ast-below-header-wrap .ast-container,
+.footer-bar-wrap .ast-container,
+.ast-footer-widgets-wrap .ast-container,
+.ast-small-footer .ast-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 32px !important;
+  padding-right: 32px !important;
 }
 
-/* ═══════════════════════════════════════════════
-   TOP BAR (opsiyonel bilgi şeridi)
-═══════════════════════════════════════════════ */
-body::before {
-  content: 'Ücretsiz kargo · 500₺ ve üzeri tüm siparişler · Güvenli ödeme';
-  display: block;
+/* Astra global content width override */
+.ast-page-builder-template .hfeed,
+.ast-no-sidebar .site-main,
+.ast-right-sidebar .site-main,
+.ast-left-sidebar .site-main,
+#primary,
+.content-area,
+.site-content {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* İçerik alanı (sayfa/ürün içi) max-width */
+.entry-content > *:not(.hs-hero):not(.hs-cats):not(.hs-products):not(.hs-trust):not([class*="hs-"]),
+.woocommerce-page .entry-content,
+.site-main .ast-article-single {
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* ═══════════════════════════════════════
+   BİLGİ ÇUBUĞU (üst şerit)
+═══════════════════════════════════════ */
+.htp-topbar {
   background: var(--c-ink);
-  color: rgba(255,255,255,.85);
+  color: rgba(255,255,255,.8);
   font-size: 12px;
   text-align: center;
-  padding: 7px 20px;
+  padding: 7px 32px;
   letter-spacing: .03em;
   font-family: 'Inter', sans-serif;
+  width: 100%;
 }
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════
    HEADER
-═══════════════════════════════════════════════ */
+═══════════════════════════════════════ */
 #masthead,
 .site-header,
 .ast-primary-header-bar,
@@ -123,135 +138,104 @@ body::before {
   padding: 0 !important;
   position: sticky !important;
   top: 0 !important;
-  z-index: 1000 !important;
+  z-index: 999 !important;
+  width: 100% !important;
 }
 
 .main-header-bar .ast-container {
-  height: 64px;
   display: flex !important;
   align-items: center !important;
-  gap: 32px !important;
+  height: 64px !important;
+  gap: 24px !important;
 }
 
-/* Logo */
-.ast-logo-container,
+/* Logo sola */
 .site-branding,
-.site-title {
+.ast-logo-container,
+.ast-site-identity {
   flex-shrink: 0 !important;
+  margin: 0 !important;
 }
-.site-title a {
-  font-size: 20px !important;
+
+.site-title {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+.site-title a,
+.site-title a:visited {
+  font-size: 19px !important;
   font-weight: 800 !important;
   color: var(--c-ink) !important;
-  letter-spacing: -.04em;
+  letter-spacing: -.04em !important;
+  text-decoration: none !important;
 }
-.site-title a span { color: var(--c-accent); }
-.custom-logo { height: 36px !important; width: auto !important; }
 
-/* Arama kutusu - header ortası */
-.ast-header-search,
-.header-search-wrap {
-  flex: 1 !important;
-  max-width: 560px !important;
+.custom-logo {
+  height: 38px !important;
+  width: auto !important;
+  display: block !important;
 }
-.ast-header-search form,
-.search-form {
+
+/* Navigasyon sağa — genişlik alır */
+.ast-site-navigation-wrap,
+.ast-main-header-nav-wrap,
+.main-navigation {
+  flex: 1 !important;
   display: flex !important;
-  border: 1.5px solid var(--c-border-2) !important;
-  border-radius: var(--r-full) !important;
-  overflow: hidden;
-  transition: border-color var(--t-fast);
-  background: var(--c-bg) !important;
-}
-.ast-header-search form:focus-within,
-.search-form:focus-within {
-  border-color: var(--c-accent) !important;
-  background: var(--c-white) !important;
-}
-.ast-header-search input[type=search],
-.search-form .search-field {
-  flex: 1 !important;
-  border: none !important;
-  outline: none !important;
-  background: transparent !important;
-  padding: 9px 16px !important;
-  font-size: 13.5px !important;
-  font-family: 'Inter', sans-serif !important;
-  color: var(--c-ink) !important;
-  box-shadow: none !important;
-}
-.ast-header-search button,
-.search-form .search-submit {
-  background: var(--c-accent) !important;
-  color: var(--c-white) !important;
-  border: none !important;
-  padding: 0 18px !important;
-  cursor: pointer;
-  font-size: 14px !important;
-  transition: background var(--t-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.ast-header-search button:hover,
-.search-form .search-submit:hover {
-  background: var(--c-accent-h) !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  height: 64px !important;
 }
 
-/* Header sağ ikonlar */
-.ast-header-woo-cart .count,
-.woocommerce-cart-link .count {
+/* Header sepet ikonu */
+.ast-header-woo-cart {
+  margin-left: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.ast-header-woo-cart .count {
   background: var(--c-accent) !important;
   color: var(--c-white) !important;
   font-size: 10px !important;
   font-weight: 700 !important;
-  border-radius: var(--r-full) !important;
-  padding: 1px 5px !important;
-  line-height: 1.4 !important;
+  border-radius: 99px !important;
 }
 
-/* ═══════════════════════════════════════════════
-   PRIMARY NAVIGATION
-═══════════════════════════════════════════════ */
-#ast-hf-menu-1,
+/* ═══════════════════════════════════════
+   NAVİGASYON
+═══════════════════════════════════════ */
 .ast-nav-menu,
-.main-navigation,
-.ast-primary-menu-disabled + .main-header-bar .ast-main-header-wrap {
-  background: var(--c-white) !important;
-}
-
-.main-navigation {
-  border-top: 1px solid var(--c-border) !important;
-}
-
-.main-navigation .ast-container {
-  height: 44px !important;
+#ast-hf-menu-1 ul,
+.main-navigation ul {
   display: flex !important;
   align-items: center !important;
-  padding: 0 20px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  height: 64px !important;
 }
 
-/* Nav items */
 .ast-nav-menu > li > a,
-.main-navigation ul > li > a {
+.main-navigation ul.menu > li > a,
+#ast-hf-menu-1 ul.menu > li > a {
   font-size: 13.5px !important;
   font-weight: 500 !important;
   color: var(--c-ink) !important;
   padding: 0 14px !important;
-  height: 44px !important;
+  height: 64px !important;
   display: flex !important;
   align-items: center !important;
   white-space: nowrap !important;
-  transition: color var(--t-fast) !important;
-  position: relative;
+  position: relative !important;
+  transition: color .15s !important;
+  background: transparent !important;
 }
-.ast-nav-menu > li > a:hover,
-.main-navigation ul > li > a:hover,
-.ast-nav-menu > li.current-menu-item > a,
-.ast-nav-menu > li.current-menu-ancestor > a {
-  color: var(--c-accent) !important;
-}
-.ast-nav-menu > li > a::after {
+
+.ast-nav-menu > li > a::after,
+.main-navigation ul.menu > li > a::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -260,11 +244,23 @@ body::before {
   height: 2px;
   background: var(--c-accent);
   transform: scaleX(0);
-  transition: transform var(--t-fast);
+  transition: transform .15s;
 }
+
+.ast-nav-menu > li > a:hover,
+.main-navigation ul.menu > li > a:hover {
+  color: var(--c-accent) !important;
+}
+
 .ast-nav-menu > li > a:hover::after,
-.ast-nav-menu > li.current-menu-item > a::after {
+.ast-nav-menu > li.current-menu-item > a::after,
+.ast-nav-menu > li.current-menu-ancestor > a::after {
   transform: scaleX(1);
+}
+
+.ast-nav-menu > li.current-menu-item > a,
+.ast-nav-menu > li.current-menu-ancestor > a {
+  color: var(--c-accent) !important;
 }
 
 /* Dropdown */
@@ -272,111 +268,96 @@ body::before {
 .main-navigation .sub-menu {
   background: var(--c-white) !important;
   border: 1px solid var(--c-border) !important;
-  border-radius: var(--r-md) !important;
-  box-shadow: var(--shadow-lg) !important;
+  border-radius: var(--r-lg) !important;
+  box-shadow: var(--sh-lg) !important;
   min-width: 200px !important;
   padding: 8px 0 !important;
-  top: calc(100% + 4px) !important;
+  top: 100% !important;
+  margin-top: 0 !important;
 }
-.ast-nav-menu .sub-menu li a,
-.main-navigation .sub-menu li a {
+
+.ast-nav-menu .sub-menu a,
+.main-navigation .sub-menu a {
   font-size: 13.5px !important;
-  padding: 9px 16px !important;
+  font-weight: 400 !important;
   color: var(--c-ink-2) !important;
-  transition: background var(--t-fast), color var(--t-fast) !important;
-  display: block !important;
+  padding: 9px 16px !important;
   height: auto !important;
+  display: block !important;
+  transition: background .12s, color .12s !important;
 }
-.ast-nav-menu .sub-menu li a:hover,
-.main-navigation .sub-menu li a:hover {
-  background: var(--c-accent-bg) !important;
+
+.ast-nav-menu .sub-menu a:hover,
+.main-navigation .sub-menu a:hover {
+  background: #FFF4EF !important;
   color: var(--c-accent) !important;
 }
 
-/* ═══════════════════════════════════════════════
-   PAGE CANVAS
-═══════════════════════════════════════════════ */
-.site-content,
-#content {
-  background: var(--c-bg) !important;
-  padding-top: 0 !important;
-}
+.ast-nav-menu .sub-menu a::after { display: none !important; }
 
-/* Content area white card */
-.entry-content,
-.woocommerce-page .entry-content,
-.ast-article-single,
-article.page .entry-content {
-  background: transparent !important;
-}
-
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════
    BREADCRUMB
-═══════════════════════════════════════════════ */
+═══════════════════════════════════════ */
 .woocommerce-breadcrumb,
-.ast-breadcrumbs-wrapper,
-.rank-math-breadcrumb {
+.ast-breadcrumbs-wrapper {
   background: var(--c-white) !important;
-  padding: 10px 0 !important;
-  margin: 0 0 0 0 !important;
+  border-bottom: 1px solid var(--c-border) !important;
+  padding: 10px 32px !important;
+  margin: 0 !important;
   font-size: 12.5px !important;
   color: var(--c-ink-3) !important;
-  border-bottom: 1px solid var(--c-border) !important;
-}
-.woocommerce-breadcrumb a,
-.ast-breadcrumbs-wrapper a,
-.rank-math-breadcrumb a {
-  color: var(--c-ink-3) !important;
-}
-.woocommerce-breadcrumb a:hover,
-.rank-math-breadcrumb a:hover {
-  color: var(--c-accent) !important;
+  width: 100% !important;
 }
 
-/* ═══════════════════════════════════════════════
-   CATEGORY / SHOP ARCHIVE — LAYOUT
-═══════════════════════════════════════════════ */
+.woocommerce-breadcrumb a { color: var(--c-ink-3) !important; }
+.woocommerce-breadcrumb a:hover { color: var(--c-accent) !important; }
+
+/* ═══════════════════════════════════════
+   MAĞAZA / ARŞİV SAYFASI
+═══════════════════════════════════════ */
 .woocommerce-archive .site-main,
 .tax-product_cat .site-main,
-.post-type-archive-product .site-main {
-  padding: 20px 0 48px !important;
+.post-type-archive-product .site-main,
+.woocommerce .site-main {
+  background: var(--c-bg) !important;
+  padding: 24px 32px 56px !important;
+  max-width: 100% !important;
 }
 
-/* Kategori başlığı */
+.woocommerce-shop .ast-container,
+.tax-product_cat .ast-container,
+.post-type-archive-product .ast-container {
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+}
+
+/* Kategori başlık */
 .woocommerce-products-header {
-  background: var(--c-white) !important;
-  padding: 24px 0 !important;
   margin-bottom: 20px !important;
-  border-bottom: 1px solid var(--c-border) !important;
 }
 .woocommerce-products-header__title {
-  font-size: 22px !important;
+  font-size: 24px !important;
   font-weight: 700 !important;
   color: var(--c-ink) !important;
   margin: 0 !important;
 }
 
-/* Toolbar (sıralama + ürün sayısı) */
-.woocommerce-ordering,
-.woocommerce-result-count {
-  font-size: 13px !important;
-  color: var(--c-ink-2) !important;
-  font-family: 'Inter', sans-serif !important;
-}
+/* Araç çubuğu */
+.woocommerce-result-count { font-size: 13px !important; color: var(--c-ink-2) !important; }
 .woocommerce-ordering select {
-  border: 1px solid var(--c-border) !important;
+  border: 1px solid var(--c-border-2) !important;
   border-radius: var(--r-sm) !important;
-  padding: 6px 28px 6px 10px !important;
+  padding: 7px 28px 7px 10px !important;
   font-size: 13px !important;
   font-family: 'Inter', sans-serif !important;
-  background-color: var(--c-white) !important;
+  background: var(--c-white) !important;
   color: var(--c-ink) !important;
   cursor: pointer;
 }
 
-/* ═══════════════════════════════════════════════
-   PRODUCT CARDS — THE CORE
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   ÜRÜN KARTLARI
+═══════════════════════════════════════ */
 .woocommerce ul.products,
 .woocommerce-page ul.products {
   display: grid !important;
@@ -385,15 +366,17 @@ article.page .entry-content {
   margin: 0 !important;
   padding: 0 !important;
   list-style: none !important;
+  float: none !important;
+  width: 100% !important;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .woocommerce ul.products,
   .woocommerce-page ul.products {
     grid-template-columns: repeat(3, 1fr) !important;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 680px) {
   .woocommerce ul.products,
   .woocommerce-page ul.products {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -408,47 +391,31 @@ article.page .entry-content {
   border-radius: var(--r-lg) !important;
   padding: 0 !important;
   margin: 0 !important;
+  float: none !important;
+  width: auto !important;
   display: flex !important;
   flex-direction: column !important;
-  transition: box-shadow var(--t-base), transform var(--t-base) !important;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
-}
-.woocommerce ul.products li.product:hover,
-.woocommerce-page ul.products li.product:hover {
-  box-shadow: var(--shadow-md) !important;
-  transform: translateY(-2px) !important;
+  transition: box-shadow .18s, transform .18s !important;
 }
 
-/* Ürün görseli */
-.woocommerce ul.products li.product a.woocommerce-loop-product__link,
-.woocommerce ul.products li.product > a:first-child {
-  display: block !important;
+.woocommerce ul.products li.product:hover,
+.woocommerce-page ul.products li.product:hover {
+  box-shadow: var(--sh-md) !important;
+  transform: translateY(-3px) !important;
 }
+
 .woocommerce ul.products li.product img {
   width: 100% !important;
   aspect-ratio: 1 / 1 !important;
   object-fit: cover !important;
   border-radius: 0 !important;
-  transition: transform var(--t-slow) !important;
+  transition: transform .3s !important;
+  display: block !important;
 }
 .woocommerce ul.products li.product:hover img {
-  transform: scale(1.04) !important;
-}
-
-/* Ürün içerik alanı */
-.woocommerce ul.products li.product .woocommerce-loop-product__link + *,
-.woocommerce ul.products li.product h2,
-.woocommerce ul.products li.product .woocommerce-loop-product__title {
-  padding: 0 !important;
-}
-
-/* Tüm metin alanı wrapper */
-.woocommerce ul.products li.product .product-inner,
-.woocommerce ul.products li.product > a + span,
-.woocommerce ul.products li.product > a.add_to_cart_button {
-  padding: 12px !important;
+  transform: scale(1.05) !important;
 }
 
 .woocommerce ul.products li.product .woocommerce-loop-product__title {
@@ -457,48 +424,47 @@ article.page .entry-content {
   color: var(--c-ink) !important;
   line-height: 1.45 !important;
   margin: 12px 12px 4px !important;
+  padding: 0 !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
 }
 
-/* Fiyat */
 .woocommerce ul.products li.product .price {
   display: block !important;
-  margin: 4px 12px 12px !important;
+  margin: 2px 12px 10px !important;
   font-size: 15px !important;
   font-weight: 700 !important;
   color: var(--c-ink) !important;
+  padding: 0 !important;
 }
 .woocommerce ul.products li.product .price ins {
   text-decoration: none !important;
   color: var(--c-accent) !important;
 }
 .woocommerce ul.products li.product .price del {
-  font-size: 12px !important;
-  color: var(--c-ink-3) !important;
+  font-size: 11.5px !important;
   font-weight: 400 !important;
+  color: var(--c-ink-3) !important;
   margin-right: 4px !important;
 }
 
-/* İndirim rozeti */
 .woocommerce ul.products li.product .onsale {
   background: var(--c-sale) !important;
-  color: var(--c-white) !important;
+  color: #fff !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   border-radius: var(--r-sm) !important;
   padding: 3px 7px !important;
-  top: 10px !important;
-  left: 10px !important;
+  top: 8px !important;
+  left: 8px !important;
   min-height: auto !important;
   min-width: auto !important;
   line-height: 1.4 !important;
   letter-spacing: .03em;
 }
 
-/* Sepete ekle butonu */
 .woocommerce ul.products li.product .button,
 .woocommerce ul.products li.product .add_to_cart_button {
   display: block !important;
@@ -507,41 +473,45 @@ article.page .entry-content {
   background: var(--c-accent) !important;
   color: var(--c-white) !important;
   border: none !important;
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
   padding: 10px 16px !important;
   font-size: 13px !important;
   font-weight: 600 !important;
   font-family: 'Inter', sans-serif !important;
   text-align: center !important;
   cursor: pointer !important;
-  transition: background var(--t-fast) !important;
-  letter-spacing: .01em;
+  transition: background .15s !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
 }
-.woocommerce ul.products li.product .button:hover,
-.woocommerce ul.products li.product .add_to_cart_button:hover {
+.woocommerce ul.products li.product .button:hover {
   background: var(--c-accent-h) !important;
-  color: var(--c-white) !important;
+  color: #fff !important;
 }
 
-/* ═══════════════════════════════════════════════
-   SINGLE PRODUCT PAGE
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   TEK ÜRÜN SAYFASI
+═══════════════════════════════════════ */
+.single-product .site-main,
+.woocommerce.single-product .site-main {
+  background: var(--c-bg) !important;
+  padding: 0 !important;
+}
+
 .woocommerce div.product {
   background: var(--c-white) !important;
   border-radius: var(--r-lg) !important;
   padding: 32px !important;
-  box-shadow: none !important;
   border: 1px solid var(--c-border) !important;
-  margin: 24px 0 !important;
+  margin: 24px 32px !important;
 }
 
-/* Ürün görseli */
-.woocommerce div.product div.images {
-  border-radius: var(--r-md) !important;
-  overflow: hidden !important;
+@media (max-width: 768px) {
+  .woocommerce div.product { margin: 12px !important; padding: 20px !important; }
 }
+
 .woocommerce div.product div.images img {
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
 }
 .woocommerce div.product div.images .flex-control-thumbs {
   margin-top: 10px !important;
@@ -553,57 +523,41 @@ article.page .entry-content {
   width: auto !important;
   flex: 1 !important;
 }
-.woocommerce div.product div.images .flex-control-thumbs li img {
+.woocommerce div.product div.images .flex-control-thumbs img {
   border-radius: var(--r-sm) !important;
   border: 2px solid transparent !important;
   cursor: pointer;
-  transition: border-color var(--t-fast) !important;
+  transition: border-color .15s !important;
 }
-.woocommerce div.product div.images .flex-control-thumbs li img.flex-active {
+.woocommerce div.product div.images .flex-control-thumbs .flex-active {
   border-color: var(--c-accent) !important;
 }
 
-/* Ürün başlık ve fiyat */
 .woocommerce div.product .product_title {
   font-size: 22px !important;
   font-weight: 700 !important;
-  line-height: 1.3 !important;
   margin-bottom: 12px !important;
-  color: var(--c-ink) !important;
 }
+
 .woocommerce div.product p.price,
 .woocommerce div.product span.price {
-  font-size: 26px !important;
+  font-size: 28px !important;
   font-weight: 800 !important;
   color: var(--c-accent) !important;
   margin-bottom: 20px !important;
   display: block !important;
 }
-.woocommerce div.product p.price del,
-.woocommerce div.product span.price del {
-  font-size: 16px !important;
-  color: var(--c-ink-3) !important;
-  font-weight: 400 !important;
-  margin-right: 8px !important;
-}
+.woocommerce div.product p.price del { font-size: 16px !important; color: var(--c-ink-3) !important; font-weight: 400 !important; margin-right: 8px !important; }
 
-/* Rating */
-.woocommerce div.product .woocommerce-product-rating {
-  margin-bottom: 16px !important;
-}
-.woocommerce .star-rating span::before { color: var(--c-star) !important; }
-
-/* Ürün özeti metin */
 .woocommerce div.product .woocommerce-product-details__short-description {
   font-size: 14px !important;
   color: var(--c-ink-2) !important;
   line-height: 1.7 !important;
-  margin-bottom: 20px !important;
   padding-bottom: 20px !important;
   border-bottom: 1px solid var(--c-border) !important;
+  margin-bottom: 20px !important;
 }
 
-/* Miktar + sepet */
 .woocommerce div.product form.cart {
   display: flex !important;
   align-items: center !important;
@@ -611,99 +565,93 @@ article.page .entry-content {
   flex-wrap: wrap !important;
   margin-bottom: 20px !important;
 }
+
 .woocommerce div.product form.cart .qty {
   width: 72px !important;
   border: 1.5px solid var(--c-border-2) !important;
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
   padding: 10px 12px !important;
   font-size: 15px !important;
   font-weight: 600 !important;
   text-align: center !important;
   font-family: 'Inter', sans-serif !important;
-  color: var(--c-ink) !important;
 }
-.woocommerce div.product form.cart .single_add_to_cart_button,
-.woocommerce #respond input#submit,
-.woocommerce a.button,
-.woocommerce button.button {
+
+.woocommerce div.product form.cart .single_add_to_cart_button {
   background: var(--c-accent) !important;
-  color: var(--c-white) !important;
+  color: #fff !important;
   border: none !important;
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
   padding: 12px 28px !important;
   font-size: 15px !important;
   font-weight: 700 !important;
   font-family: 'Inter', sans-serif !important;
   cursor: pointer !important;
-  transition: background var(--t-fast) !important;
-  letter-spacing: .01em;
+  transition: background .15s !important;
+  flex: 1 !important;
+  text-align: center !important;
 }
 .woocommerce div.product form.cart .single_add_to_cart_button:hover {
   background: var(--c-accent-h) !important;
 }
 
-/* Meta (SKU, kategori) */
-.woocommerce div.product .product_meta {
-  font-size: 12.5px !important;
-  color: var(--c-ink-3) !important;
-  margin-top: 16px !important;
-  padding-top: 16px !important;
-  border-top: 1px solid var(--c-border) !important;
-}
-.woocommerce div.product .product_meta a {
-  color: var(--c-ink-2) !important;
-}
-.woocommerce div.product .product_meta a:hover {
-  color: var(--c-accent) !important;
-}
-
 /* Tabs */
 .woocommerce div.product .woocommerce-tabs ul.tabs {
   border-bottom: 1px solid var(--c-border) !important;
-  margin-bottom: 0 !important;
+  display: flex !important;
   padding: 0 !important;
-  display: flex;
-  gap: 0;
+  margin-bottom: 0 !important;
+  background: none !important;
 }
+.woocommerce div.product .woocommerce-tabs ul.tabs::before,
+.woocommerce div.product .woocommerce-tabs ul.tabs li::before,
+.woocommerce div.product .woocommerce-tabs ul.tabs li::after { display: none !important; }
 .woocommerce div.product .woocommerce-tabs ul.tabs li {
-  background: transparent !important;
+  background: none !important;
   border: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  border-radius: 0 !important;
 }
 .woocommerce div.product .woocommerce-tabs ul.tabs li a {
   font-size: 14px !important;
   font-weight: 600 !important;
   color: var(--c-ink-2) !important;
   padding: 12px 20px !important;
-  display: block;
+  display: block !important;
   border-bottom: 2px solid transparent;
-  transition: color var(--t-fast), border-color var(--t-fast) !important;
+  background: none !important;
+  transition: color .15s, border-color .15s !important;
 }
 .woocommerce div.product .woocommerce-tabs ul.tabs li.active a,
 .woocommerce div.product .woocommerce-tabs ul.tabs li a:hover {
   color: var(--c-accent) !important;
   border-bottom-color: var(--c-accent) !important;
 }
-.woocommerce div.product .woocommerce-tabs ul.tabs li::before,
-.woocommerce div.product .woocommerce-tabs ul.tabs li::after,
-.woocommerce div.product .woocommerce-tabs ul.tabs::before { display: none !important; }
 .woocommerce div.product .woocommerce-tabs .panel {
-  margin: 0 !important;
-  padding: 24px 0 !important;
   background: transparent !important;
   border: none !important;
+  margin: 0 !important;
+  padding: 24px 0 !important;
   font-size: 14px !important;
-  color: var(--c-ink-2) !important;
   line-height: 1.75 !important;
+  color: var(--c-ink-2) !important;
 }
 
-/* İlgili ürünler */
-.related.products,
-.upsells.products,
-.cross-sells {
-  margin-top: 48px !important;
+/* Varyasyon seçenekleri */
+.woocommerce div.product .variations select {
+  border: 1.5px solid var(--c-border-2) !important;
+  border-radius: var(--r) !important;
+  padding: 9px 12px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  background: var(--c-white) !important;
 }
+
+/* Star rating */
+.woocommerce .star-rating span::before { color: var(--c-star) !important; }
+
+/* İlgili ürünler */
 .related.products > h2,
 .upsells.products > h2 {
   font-size: 18px !important;
@@ -713,11 +661,11 @@ article.page .entry-content {
   border-bottom: 1px solid var(--c-border) !important;
 }
 
-/* ═══════════════════════════════════════════════
-   CART PAGE
-═══════════════════════════════════════════════ */
-.woocommerce-cart .woocommerce {
-  background: transparent !important;
+/* ═══════════════════════════════════════
+   SEPET SAYFASI
+═══════════════════════════════════════ */
+.woocommerce-cart .site-main {
+  padding: 24px 32px 56px !important;
 }
 
 .woocommerce-cart-form table.cart {
@@ -727,15 +675,15 @@ article.page .entry-content {
   border-collapse: separate !important;
   border-spacing: 0 !important;
   overflow: hidden;
-  margin-bottom: 24px !important;
+  width: 100% !important;
 }
 .woocommerce-cart-form table.cart thead tr th {
   background: var(--c-bg) !important;
-  color: var(--c-ink-2) !important;
   font-size: 12px !important;
   font-weight: 600 !important;
   letter-spacing: .06em !important;
   text-transform: uppercase !important;
+  color: var(--c-ink-2) !important;
   padding: 12px 16px !important;
   border-bottom: 1px solid var(--c-border) !important;
 }
@@ -743,27 +691,17 @@ article.page .entry-content {
   padding: 16px !important;
   border-bottom: 1px solid var(--c-border) !important;
   vertical-align: middle !important;
-  font-size: 14px !important;
 }
-.woocommerce-cart-form table.cart tbody tr:last-child td { border-bottom: none !important; }
-
 .woocommerce-cart-form table.cart td.product-thumbnail img {
   width: 72px !important;
   height: 72px !important;
   object-fit: cover !important;
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
   border: 1px solid var(--c-border) !important;
 }
-.woocommerce-cart-form table.cart td.product-name a {
-  font-weight: 600 !important;
-  color: var(--c-ink) !important;
-}
+.woocommerce-cart-form table.cart td.product-name a { font-weight: 600 !important; }
 .woocommerce-cart-form table.cart td.product-price,
-.woocommerce-cart-form table.cart td.product-subtotal {
-  font-weight: 700 !important;
-  color: var(--c-ink) !important;
-}
-
+.woocommerce-cart-form table.cart td.product-subtotal { font-weight: 700 !important; }
 .woocommerce-cart-form table.cart td.product-quantity input {
   width: 60px !important;
   border: 1.5px solid var(--c-border-2) !important;
@@ -773,7 +711,6 @@ article.page .entry-content {
   font-family: 'Inter', sans-serif !important;
 }
 
-/* Sepet totals */
 .cart-collaterals .cart_totals {
   background: var(--c-white) !important;
   border: 1px solid var(--c-border) !important;
@@ -782,15 +719,11 @@ article.page .entry-content {
 }
 .cart_totals h2 {
   font-size: 16px !important;
-  font-weight: 700 !important;
   margin-bottom: 16px !important;
   padding-bottom: 12px !important;
   border-bottom: 1px solid var(--c-border) !important;
 }
-.cart_totals table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-}
+.cart_totals table { width: 100% !important; border-collapse: collapse !important; }
 .cart_totals table th,
 .cart_totals table td {
   padding: 10px 0 !important;
@@ -802,35 +735,25 @@ article.page .entry-content {
   font-size: 16px !important;
   font-weight: 700 !important;
   border-bottom: none !important;
-  color: var(--c-ink) !important;
 }
 .cart_totals .wc-proceed-to-checkout a {
   display: block !important;
   background: var(--c-accent) !important;
-  color: var(--c-white) !important;
+  color: #fff !important;
   text-align: center !important;
   padding: 14px !important;
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
   font-size: 15px !important;
   font-weight: 700 !important;
-  font-family: 'Inter', sans-serif !important;
   margin-top: 16px !important;
-  transition: background var(--t-fast) !important;
+  transition: background .15s !important;
 }
-.cart_totals .wc-proceed-to-checkout a:hover {
-  background: var(--c-accent-h) !important;
-}
+.cart_totals .wc-proceed-to-checkout a:hover { background: var(--c-accent-h) !important; }
 
-/* ═══════════════════════════════════════════════
-   CHECKOUT PAGE
-═══════════════════════════════════════════════ */
-.woocommerce-checkout #customer_details,
-.woocommerce-checkout #order_review_heading + #order_review {
-  background: var(--c-white) !important;
-  border: 1px solid var(--c-border) !important;
-  border-radius: var(--r-lg) !important;
-  padding: 28px !important;
-}
+/* ═══════════════════════════════════════
+   CHECKOUT SAYFASI
+═══════════════════════════════════════ */
+.woocommerce-checkout .site-main { padding: 24px 32px 56px !important; }
 
 .woocommerce-checkout h3 {
   font-size: 16px !important;
@@ -840,25 +763,17 @@ article.page .entry-content {
   border-bottom: 1px solid var(--c-border) !important;
 }
 
-.woocommerce-checkout .form-row label {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: var(--c-ink-2) !important;
-  margin-bottom: 5px !important;
-  display: block !important;
-}
 .woocommerce-checkout .form-row input,
 .woocommerce-checkout .form-row select,
 .woocommerce-checkout .form-row textarea {
   width: 100% !important;
   border: 1.5px solid var(--c-border-2) !important;
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
   padding: 10px 12px !important;
   font-size: 14px !important;
   font-family: 'Inter', sans-serif !important;
-  color: var(--c-ink) !important;
   background: var(--c-white) !important;
-  transition: border-color var(--t-fast) !important;
+  transition: border-color .15s !important;
   box-shadow: none !important;
 }
 .woocommerce-checkout .form-row input:focus,
@@ -867,166 +782,103 @@ article.page .entry-content {
   outline: none !important;
   border-color: var(--c-accent) !important;
 }
+.woocommerce-checkout .form-row label {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--c-ink-2) !important;
+  margin-bottom: 5px !important;
+  display: block !important;
+}
 
-/* Ödeme kutuları */
 .woocommerce-checkout #payment {
   background: var(--c-bg) !important;
   border-radius: var(--r-lg) !important;
   padding: 24px !important;
   border: 1px solid var(--c-border) !important;
 }
-.woocommerce-checkout #payment ul.payment_methods {
-  border-bottom: 1px solid var(--c-border) !important;
-  padding-bottom: 16px !important;
-  margin-bottom: 16px !important;
-}
-.woocommerce-checkout #payment ul.payment_methods li {
-  padding: 10px 12px !important;
-  border-radius: var(--r-sm) !important;
-  transition: background var(--t-fast) !important;
-}
-.woocommerce-checkout #payment ul.payment_methods li:hover {
-  background: var(--c-white) !important;
-}
 
-/* Sipariş ver butonu */
 #place_order {
   background: var(--c-accent) !important;
-  color: var(--c-white) !important;
+  color: #fff !important;
   border: none !important;
-  border-radius: var(--r-md) !important;
+  border-radius: var(--r) !important;
   padding: 14px 32px !important;
   font-size: 16px !important;
   font-weight: 700 !important;
   font-family: 'Inter', sans-serif !important;
   cursor: pointer !important;
   width: 100% !important;
-  letter-spacing: .01em;
-  transition: background var(--t-fast) !important;
+  transition: background .15s !important;
 }
 #place_order:hover { background: var(--c-accent-h) !important; }
 
-/* ═══════════════════════════════════════════════
-   ACCOUNT PAGES
-═══════════════════════════════════════════════ */
-.woocommerce-account .woocommerce {
-  background: var(--c-white) !important;
-  border: 1px solid var(--c-border) !important;
-  border-radius: var(--r-lg) !important;
-  padding: 28px !important;
-  margin: 24px 0 !important;
-}
-.woocommerce-account .woocommerce-MyAccount-navigation {
-  border-right: 1px solid var(--c-border) !important;
-  padding-right: 24px !important;
-}
-.woocommerce-account .woocommerce-MyAccount-navigation ul {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-.woocommerce-account .woocommerce-MyAccount-navigation ul li a {
-  display: block !important;
-  padding: 9px 12px !important;
-  border-radius: var(--r-sm) !important;
-  font-size: 13.5px !important;
-  color: var(--c-ink-2) !important;
-  font-weight: 500 !important;
-  transition: background var(--t-fast), color var(--t-fast) !important;
-}
-.woocommerce-account .woocommerce-MyAccount-navigation ul li.is-active a,
-.woocommerce-account .woocommerce-MyAccount-navigation ul li a:hover {
-  background: var(--c-accent-bg) !important;
-  color: var(--c-accent) !important;
-}
-
-/* ═══════════════════════════════════════════════
-   MESSAGES & NOTICES
-═══════════════════════════════════════════════ */
-.woocommerce-message,
-.woocommerce-info,
-.woocommerce-error,
-.wc-block-components-notice-banner {
-  border-radius: var(--r-md) !important;
-  border-left-width: 4px !important;
-  font-size: 14px !important;
-  font-family: 'Inter', sans-serif !important;
-}
-.woocommerce-message { border-left-color: var(--c-success) !important; }
-.woocommerce-info { border-left-color: #3B82F6 !important; }
-.woocommerce-error { border-left-color: var(--c-sale) !important; }
-.woocommerce-message::before { color: var(--c-success) !important; }
-.woocommerce-info::before { color: #3B82F6 !important; }
-.woocommerce-error::before { color: var(--c-sale) !important; }
-
-/* ═══════════════════════════════════════════════
-   FORMS — GENEL
-═══════════════════════════════════════════════ */
-input[type=text],
-input[type=email],
-input[type=password],
-input[type=number],
-input[type=tel],
-textarea,
-select {
-  border: 1.5px solid var(--c-border-2) !important;
-  border-radius: var(--r-md) !important;
-  font-family: 'Inter', sans-serif !important;
-  font-size: 14px !important;
-  color: var(--c-ink) !important;
-  background: var(--c-white) !important;
-  transition: border-color var(--t-fast) !important;
-}
-input:focus, textarea:focus, select:focus {
-  outline: none !important;
-  border-color: var(--c-accent) !important;
-  box-shadow: 0 0 0 3px rgba(232,77,0,.12) !important;
-}
-
-/* ═══════════════════════════════════════════════
-   BUTONLAR — GENEL
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   GENEL BUTONLAR
+═══════════════════════════════════════ */
 .woocommerce a.button,
 .woocommerce button.button,
 .woocommerce input.button,
 .woocommerce #respond input#submit {
   background: var(--c-accent) !important;
-  color: var(--c-white) !important;
-  border-radius: var(--r-md) !important;
+  color: #fff !important;
+  border-radius: var(--r) !important;
   font-family: 'Inter', sans-serif !important;
   font-weight: 600 !important;
   font-size: 14px !important;
   border: none !important;
-  transition: background var(--t-fast) !important;
+  transition: background .15s !important;
   cursor: pointer !important;
 }
 .woocommerce a.button:hover,
-.woocommerce button.button:hover {
-  background: var(--c-accent-h) !important;
-  color: var(--c-white) !important;
-}
+.woocommerce button.button:hover { background: var(--c-accent-h) !important; color: #fff !important; }
 .woocommerce a.button.alt,
-.woocommerce button.button.alt {
-  background: var(--c-ink) !important;
-}
+.woocommerce button.button.alt { background: var(--c-ink) !important; }
 .woocommerce a.button.alt:hover { background: #333 !important; }
 
-/* ═══════════════════════════════════════════════
-   PAGINATION
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   FORMLAR
+═══════════════════════════════════════ */
+input[type=text],input[type=email],input[type=password],
+input[type=number],input[type=tel],textarea,select {
+  border: 1.5px solid var(--c-border-2) !important;
+  border-radius: var(--r) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  color: var(--c-ink) !important;
+  background: var(--c-white) !important;
+  transition: border-color .15s !important;
+}
+input:focus,textarea:focus,select:focus {
+  outline: none !important;
+  border-color: var(--c-accent) !important;
+  box-shadow: 0 0 0 3px rgba(232,77,0,.1) !important;
+}
+
+/* ═══════════════════════════════════════
+   NOTICE / MESAJLAR
+═══════════════════════════════════════ */
+.woocommerce-message { border-left-color: var(--c-success) !important; }
+.woocommerce-info { border-left-color: #3B82F6 !important; }
+.woocommerce-error { border-left-color: var(--c-sale) !important; }
+.woocommerce-message::before { color: var(--c-success) !important; }
+.woocommerce-info::before { color: #3B82F6 !important; }
+
+/* ═══════════════════════════════════════
+   SAYFALAMA
+═══════════════════════════════════════ */
 .woocommerce-pagination ul,
-.page-numbers {
-  display: flex !important;
+nav.woocommerce-pagination {
+  margin: 32px 0 !important;
+  text-align: center !important;
+}
+.woocommerce-pagination ul {
+  display: inline-flex !important;
   gap: 6px !important;
   list-style: none !important;
   padding: 0 !important;
-  justify-content: center !important;
-  margin: 32px 0 !important;
 }
 .woocommerce-pagination ul li a,
-.woocommerce-pagination ul li span,
-.page-numbers li a,
-.page-numbers li span {
+.woocommerce-pagination ul li span {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1038,106 +890,19 @@ input:focus, textarea:focus, select:focus {
   font-weight: 500 !important;
   color: var(--c-ink-2) !important;
   background: var(--c-white) !important;
-  transition: all var(--t-fast) !important;
+  transition: all .15s !important;
 }
-.woocommerce-pagination ul li a:hover,
-.page-numbers li a:hover {
-  border-color: var(--c-accent) !important;
-  color: var(--c-accent) !important;
-}
-.woocommerce-pagination ul li span.current,
-.page-numbers li span.current {
+.woocommerce-pagination ul li a:hover { border-color: var(--c-accent) !important; color: var(--c-accent) !important; }
+.woocommerce-pagination ul li span.current {
   background: var(--c-accent) !important;
   border-color: var(--c-accent) !important;
-  color: var(--c-white) !important;
+  color: #fff !important;
   font-weight: 700 !important;
 }
 
-/* ═══════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════ */
-.site-footer,
-#colophon {
-  background: #111111 !important;
-  color: rgba(255,255,255,.75) !important;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-.ast-footer-widgets-wrap,
-.ast-footer-widgets {
-  background: #111111 !important;
-  padding: 56px 0 40px !important;
-}
-
-/* Footer widget başlıkları */
-.ast-footer-widgets-wrap .widget-title,
-.site-footer .widget-title {
-  color: var(--c-white) !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  letter-spacing: .08em !important;
-  text-transform: uppercase !important;
-  margin-bottom: 16px !important;
-  padding-bottom: 10px !important;
-  border-bottom: 1px solid rgba(255,255,255,.12) !important;
-}
-
-/* Footer linkler */
-.site-footer .widget ul,
-.ast-footer-widgets-wrap .widget ul {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-.site-footer .widget ul li,
-.ast-footer-widgets-wrap .widget ul li {
-  margin-bottom: 8px !important;
-}
-.site-footer .widget ul li a,
-.ast-footer-widgets-wrap .widget ul li a {
-  color: rgba(255,255,255,.65) !important;
-  font-size: 13.5px !important;
-  transition: color var(--t-fast) !important;
-}
-.site-footer .widget ul li a:hover,
-.ast-footer-widgets-wrap .widget ul li a:hover {
-  color: var(--c-white) !important;
-}
-
-/* Footer metin widgetları */
-.site-footer .widget p,
-.ast-footer-widgets-wrap .widget p {
-  color: rgba(255,255,255,.6) !important;
-  font-size: 13.5px !important;
-  line-height: 1.7 !important;
-}
-
-/* Footer alt çubuk */
-.ast-small-footer,
-.footer-bar-wrap {
-  background: #0A0A0A !important;
-  border-top: 1px solid rgba(255,255,255,.08) !important;
-  padding: 14px 20px !important;
-}
-.ast-small-footer .ast-footer-copyright,
-.ast-small-footer p {
-  font-size: 12.5px !important;
-  color: rgba(255,255,255,.45) !important;
-  margin: 0 !important;
-}
-.ast-small-footer a {
-  color: rgba(255,255,255,.55) !important;
-}
-.ast-small-footer a:hover { color: var(--c-white) !important; }
-
-/* ═══════════════════════════════════════════════
-   SIDEBAR
-═══════════════════════════════════════════════ */
-#secondary,
-.widget-area {
-  font-size: 14px !important;
-}
+/* ═══════════════════════════════════════
+   SIDEBAR WIDGET
+═══════════════════════════════════════ */
 #secondary .widget,
 .widget-area .widget {
   background: var(--c-white) !important;
@@ -1150,126 +915,132 @@ input:focus, textarea:focus, select:focus {
 .widget-area .widget-title {
   font-size: 14px !important;
   font-weight: 700 !important;
-  color: var(--c-ink) !important;
   margin-bottom: 14px !important;
   padding-bottom: 10px !important;
   border-bottom: 1px solid var(--c-border) !important;
 }
+.widget_price_filter .ui-slider-range,
+.widget_price_filter .ui-slider-handle { background: var(--c-accent) !important; }
+.widget_product_categories ul li a { font-size: 13.5px !important; color: var(--c-ink-2) !important; }
+.widget_product_categories ul li a:hover { color: var(--c-accent) !important; }
 
-/* Fiyat filtresi slider */
-.widget_price_filter .price_slider_wrapper .ui-widget-content {
-  background: var(--c-border) !important;
-}
-.widget_price_filter .price_slider_wrapper .ui-slider-range,
-.widget_price_filter .price_slider_wrapper .ui-slider-handle {
-  background: var(--c-accent) !important;
-}
-
-/* Kategori widget */
-.widget_product_categories ul li a {
-  color: var(--c-ink-2) !important;
-  font-size: 13.5px !important;
-  transition: color var(--t-fast) !important;
-}
-.widget_product_categories ul li a:hover {
-  color: var(--c-accent) !important;
-}
-
-/* ═══════════════════════════════════════════════
-   ANA SAYFA OVERRİDE (hertelden-anasayfa plugin ile birlikte)
-═══════════════════════════════════════════════ */
-body.home,
-body.page-template-default.home {
-  background: var(--c-bg) !important;
-}
-body.home .entry-content > section {
-  margin-left: calc(50% - 50vw) !important;
-  margin-right: calc(50% - 50vw) !important;
-  padding-left: calc(50vw - 50%) !important;
-  padding-right: calc(50vw - 50%) !important;
-}
-
-/* ═══════════════════════════════════════════════
-   SCROLL TO TOP (minimal)
-═══════════════════════════════════════════════ */
-#scroll-to-top,
-.ast-scroll-top {
-  background: var(--c-accent) !important;
-  border-radius: var(--r-full) !important;
-  border: none !important;
-}
-
-/* ═══════════════════════════════════════════════
-   ASTRA THEME SPECIFIC OVERRIDES
-═══════════════════════════════════════════════ */
-/* Astra'nın varsayılan mavi/mor renklerini sıfırla */
-:root {
-  --ast-global-color-0: var(--c-accent) !important;
-  --ast-global-color-2: var(--c-ink) !important;
-}
-.ast-builder-layout-element .ast-site-header-cart .count {
-  background: var(--c-accent) !important;
-}
-.ast-primary-header-bar .ast-search-icon .ast-icon {
-  color: var(--c-ink-2) !important;
-}
-/* Astra içerik padding */
-.ast-page-builder-template .hfeed, .ast-no-sidebar.ast-right-sidebar .site-main {
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.site-footer,
+#colophon {
+  background: #111111 !important;
+  color: rgba(255,255,255,.7) !important;
+  margin-top: 0 !important;
   padding-top: 0 !important;
+  width: 100% !important;
 }
 
-/* ═══════════════════════════════════════════════
-   LOADING SKELETON (opsiyonel görsel iyileştirme)
-═══════════════════════════════════════════════ */
-@keyframes shimmer {
-  0% { background-position: -800px 0; }
-  100% { background-position: 800px 0; }
+.ast-footer-widgets-wrap,
+.ast-footer-widgets {
+  background: #111111 !important;
+  padding: 56px 32px 40px !important;
 }
 
-/* ═══════════════════════════════════════════════
-   MOBILE MENU
-═══════════════════════════════════════════════ */
+.ast-footer-widgets-wrap .widget-title,
+.site-footer .widget-title {
+  color: var(--c-white) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 16px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid rgba(255,255,255,.12) !important;
+}
+.site-footer .widget ul { list-style: none !important; padding: 0 !important; margin: 0 !important; }
+.site-footer .widget ul li { margin-bottom: 8px !important; }
+.site-footer .widget ul li a { color: rgba(255,255,255,.6) !important; font-size: 13.5px !important; transition: color .15s !important; }
+.site-footer .widget ul li a:hover { color: var(--c-white) !important; }
+.site-footer .widget p { color: rgba(255,255,255,.6) !important; font-size: 13.5px !important; line-height: 1.7 !important; }
+
+.ast-small-footer,
+.footer-bar-wrap {
+  background: #0A0A0A !important;
+  border-top: 1px solid rgba(255,255,255,.08) !important;
+  padding: 14px 32px !important;
+  width: 100% !important;
+}
+.ast-small-footer p,
+.ast-small-footer .ast-footer-copyright {
+  font-size: 12.5px !important;
+  color: rgba(255,255,255,.4) !important;
+  margin: 0 !important;
+}
+.ast-small-footer a { color: rgba(255,255,255,.55) !important; }
+.ast-small-footer a:hover { color: var(--c-white) !important; }
+
+/* ═══════════════════════════════════════
+   MOBİL
+═══════════════════════════════════════ */
 @media (max-width: 921px) {
-  .ast-header-break-point .main-header-bar {
-    padding: 0 16px !important;
-    height: 56px !important;
-  }
-  .ast-header-break-point .ast-mobile-menu-trigger-minimal {
-    color: var(--c-ink) !important;
-  }
-  .ast-header-break-point .ast-above-header-bar,
-  body::before { display: none !important; }
+  .ast-header-break-point .main-header-bar .ast-container { height: 56px !important; }
+  .ast-header-break-point body::before { display: none; }
 
-  /* Mobile nav panel */
   .ast-header-break-point .main-header-bar-navigation {
     background: var(--c-white) !important;
     border-top: 1px solid var(--c-border) !important;
-    box-shadow: var(--shadow-xl) !important;
+    box-shadow: var(--sh-lg) !important;
   }
   .ast-header-break-point .main-navigation .menu-item a {
     font-size: 15px !important;
-    padding: 12px 20px !important;
+    padding: 13px 20px !important;
     border-bottom: 1px solid var(--c-border) !important;
     color: var(--c-ink) !important;
+    height: auto !important;
   }
   .ast-header-break-point .main-navigation .menu-item a:hover {
-    background: var(--c-accent-bg) !important;
+    background: #FFF4EF !important;
     color: var(--c-accent) !important;
+  }
+
+  .woocommerce-cart .site-main,
+  .woocommerce-checkout .site-main,
+  .woocommerce-archive .site-main,
+  .single-product .site-main { padding: 16px !important; }
+
+  .woocommerce div.product { margin: 12px !important; padding: 16px !important; }
+  .ast-footer-widgets-wrap { padding: 40px 20px 28px !important; }
+  .ast-small-footer { padding: 12px 20px !important; }
+}
+
+@media (max-width: 600px) {
+  .ast-container,
+  .main-header-bar .ast-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }
 
-/* ═══════════════════════════════════════════════
-   UTILITY
-═══════════════════════════════════════════════ */
-.woocommerce-page .woocommerce > * { margin-bottom: 0 !important; }
-.woocommerce .col2-set { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+/* ═══════════════════════════════════════
+   YARDIMCI
+═══════════════════════════════════════ */
+body.admin-bar #masthead { top: 32px !important; }
+@media (max-width: 782px) { body.admin-bar #masthead { top: 46px !important; } }
+
+.clear,
+.woocommerce .col2-set::after { display: none !important; }
+.woocommerce .col2-set {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 24px !important;
+}
 @media (max-width: 640px) {
   .woocommerce .col2-set { grid-template-columns: 1fr !important; }
 }
-.clear { display: none !important; }
-
-/* WordPress admin bar compensate */
-body.admin-bar::before { display: none !important; }
 
 </style>
-<?php } ?>
+
+<?php
+// Topbar enjekte et (body::before yerine gerçek element)
+add_action( 'wp_body_open', function() {
+    if ( ! is_admin() ) {
+        echo '<div class="htp-topbar">Ücretsiz kargo &nbsp;·&nbsp; 500₺ ve üzeri tüm siparişler &nbsp;·&nbsp; Güvenli ödeme</div>';
+    }
+} );
+}
