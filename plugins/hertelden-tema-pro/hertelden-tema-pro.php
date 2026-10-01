@@ -186,7 +186,8 @@ a { text-decoration: none; color: inherit; }
   display: flex !important;
   justify-content: flex-end !important;
   align-items: center !important;
-  height: 64px !important;
+  /* height YOK — dropdown'ın görünmesi için overflow serbest */
+  position: relative !important;
 }
 
 /* Header sepet ikonu */
@@ -207,15 +208,16 @@ a { text-decoration: none; color: inherit; }
    NAVİGASYON
 ═══════════════════════════════════════ */
 .ast-nav-menu,
-#ast-hf-menu-1 ul,
-.main-navigation ul {
+#ast-hf-menu-1 ul.menu,
+.main-navigation ul.menu {
   display: flex !important;
   align-items: center !important;
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
   gap: 0 !important;
-  height: 64px !important;
+  /* height YOK — dropdown'ların görünmesi için */
+  position: static !important;
 }
 
 .ast-nav-menu > li > a,
