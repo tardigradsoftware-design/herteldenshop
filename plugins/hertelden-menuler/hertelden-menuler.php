@@ -74,11 +74,13 @@ function hm_create_menus() {
         'evlilik-paketleri' => 'Evlilik Paketleri',
     ];
 
+    $l1_position = 0;
     foreach ( $l1_cats as $slug => $label ) {
         $l1_term = get_term_by( 'slug', $slug, 'product_cat' );
         if ( ! $l1_term ) continue;
+        $l1_position++;
 
-        // L1 menü öğesi ekle
+        // L1 menü öğesi ekle — açık sıra numarası
         $l1_item_id = wp_update_nav_menu_item( $main_id, 0, [
             'menu-item-title'     => $label,
             'menu-item-object'    => 'product_cat',
@@ -86,6 +88,7 @@ function hm_create_menus() {
             'menu-item-type'      => 'taxonomy',
             'menu-item-status'    => 'publish',
             'menu-item-parent-id' => 0,
+            'menu-item-position'  => $l1_position,
         ] );
 
         if ( is_wp_error( $l1_item_id ) ) continue;
