@@ -280,91 +280,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--c-accent) !important;
 }
 
-/* ── MEGA MENU ─────────────────────────────────────────── */
-
-/* L1 öğeler — static (panel viewport'a göre konumlanıyor) */
-.ast-nav-menu > li,
-.main-navigation ul.menu > li {
-  position: static !important;
-}
-
-/* Mega panel — kapalı başlar, JS açar */
-.ast-nav-menu > li > .sub-menu,
-.main-navigation ul.menu > li > .sub-menu {
-  display: none !important;
-  position: fixed !important;
-  left: 0 !important;
-  width: 100vw !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  gap: 4px 0 !important;
-  padding: 28px 48px 32px !important;
-  background: var(--c-white) !important;
-  border-top: 2px solid var(--c-accent) !important;
-  border-bottom: 1px solid var(--c-border) !important;
-  border-left: none !important;
-  border-right: none !important;
-  box-shadow: 0 16px 40px rgba(0,0,0,.12) !important;
-  border-radius: 0 !important;
-  z-index: 99999 !important;
-  min-width: unset !important;
-}
-
-/* JS tarafından .htp-mega-open class eklenince göster */
-.ast-nav-menu > li.htp-mega-open > .sub-menu,
-.main-navigation ul.menu > li.htp-mega-open > .sub-menu {
-  display: flex !important;
-}
-
-/* L2 öğe sütunları */
-.ast-nav-menu > li > .sub-menu > li,
-.main-navigation ul.menu > li > .sub-menu > li {
-  flex: 0 0 auto !important;
-  min-width: 170px !important;
-  padding: 4px 32px 4px 0 !important;
-  margin: 0 !important;
-  background: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  display: block !important;
-  float: none !important;
-}
-
-.ast-nav-menu > li > .sub-menu > li > a,
-.main-navigation ul.menu > li > .sub-menu > li > a {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: var(--c-ink-2) !important;
-  padding: 5px 0 !important;
-  height: auto !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 7px !important;
-  white-space: nowrap !important;
-  transition: color .12s !important;
-  background: none !important;
-  border: none !important;
-}
-
-.ast-nav-menu > li > .sub-menu > li > a::before {
-  content: '';
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--c-border-2);
-  flex-shrink: 0;
-}
-
-.ast-nav-menu > li > .sub-menu > li > a:hover,
-.main-navigation ul.menu > li > .sub-menu > li > a:hover {
-  color: var(--c-accent) !important;
-  background: none !important;
-}
-.ast-nav-menu > li > .sub-menu > li > a:hover::before { background: var(--c-accent); }
-
-.ast-nav-menu .sub-menu a::after { display: none !important; }
-
 /* ═══════════════════════════════════════
    BREADCRUMB
 ═══════════════════════════════════════ */
@@ -1094,18 +1009,6 @@ body.admin-bar #masthead { top: 32px !important; }
 body.admin-bar .htp-mega-open > .sub-menu { margin-top: 32px !important; }
 @media (max-width: 782px) { body.admin-bar #masthead { top: 46px !important; } }
 
-/* Mega menu panel — mobilde gizle */
-@media (max-width: 921px) {
-  .ast-nav-menu > li > .sub-menu,
-  .main-navigation ul.menu > li > .sub-menu {
-    position: static !important;
-    width: 100% !important;
-    padding: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    background: none !important;
-  }
-}
 
 .clear,
 .woocommerce .col2-set::after { display: none !important; }
@@ -1128,45 +1031,4 @@ add_action( 'wp_body_open', function() {
     }
 } );
 
-// Mega menü JavaScript
-add_action( 'wp_footer', function() {
-    if ( is_admin() ) return;
-    ?>
-<script>
-(function(){
-  document.addEventListener('DOMContentLoaded', function(){
-    var selectors = '.ast-nav-menu > li, .main-navigation ul.menu > li';
-    var items = document.querySelectorAll(selectors);
-    if (!items.length) return;
-
-    function getHeaderBottom() {
-      var hdr = document.querySelector('#masthead, .main-header-bar, .ast-primary-header-bar, .site-header');
-      if (!hdr) return 64;
-      return Math.round(hdr.getBoundingClientRect().bottom);
-    }
-
-    items.forEach(function(li){
-      var sub = li.querySelector(':scope > .sub-menu');
-      if (!sub) return;
-      var timer;
-
-      function open(){
-        clearTimeout(timer);
-        sub.style.top = getHeaderBottom() + 'px';
-        li.classList.add('htp-mega-open');
-      }
-      function close(){
-        timer = setTimeout(function(){ li.classList.remove('htp-mega-open'); }, 80);
-      }
-
-      li.addEventListener('mouseenter', open);
-      li.addEventListener('mouseleave', close);
-      sub.addEventListener('mouseenter', function(){ clearTimeout(timer); });
-      sub.addEventListener('mouseleave', close);
-    });
-  });
-})();
-</script>
-    <?php
-} );
 }
