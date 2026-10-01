@@ -94,9 +94,9 @@ function hy_create_pages() {
    KVKK / GİZLİLİK POLİTİKASI
 ===================================================== */
 function hy_kvkk_content() {
-    return '
+    return <<<'HTML'
 <h2>1. Veri Sorumlusu</h2>
-<p>Bu aydınlatma metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında <strong>[FİRMA UNVANI]</strong> ("Hertelden Shop" veya "biz") tarafından hazırlanmıştır.</p>
+<p>Bu aydınlatma metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında <strong>[FİRMA UNVANI]</strong> ("Hertelden Shop" veya "biz") tarafından hazırlanmıştır.</p>
 <p>Veri Sorumlusu: <strong>[FİRMA UNVANI]</strong><br>
 Adres: <strong>[FİRMA ADRESİ]</strong><br>
 E-posta: herteldenshoptr@gmail.com</p>
@@ -124,7 +124,7 @@ E-posta: herteldenshoptr@gmail.com</p>
 </ul>
 
 <h2>4. Hukuki Dayanak</h2>
-<p>Kişisel verileriniz; sözleşmenin kurulması ve ifası, yasal yükümlülüklerimizin yerine getirilmesi ve meşru menfaatlerimiz kapsamında KVKK'nın 5. maddesi uyarınca işlenmektedir.</p>
+<p>Kişisel verileriniz; sözleşmenin kurulması ve ifası, yasal yükümlülüklerimizin yerine getirilmesi ve meşru menfaatlerimiz kapsamında KVKK'nin 5. maddesi uyarınca işlenmektedir.</p>
 
 <h2>5. Kişisel Verilerin Aktarılması</h2>
 <p>Kişisel verileriniz; kargo ve lojistik firmaları, ödeme kuruluşları, e-fatura hizmet sağlayıcıları ve yasal yükümlülükler çerçevesinde kamu kurumlarıyla paylaşılabilir. Yurt dışına veri aktarımı yapılmamaktadır.</p>
@@ -136,7 +136,7 @@ E-posta: herteldenshoptr@gmail.com</p>
 <p>Kişisel verileriniz, ilgili mevzuatta öngörülen süreler ve işleme amacının gerektirdiği süre boyunca saklanır. Ticari kayıtlar ve fatura bilgileri yasal olarak 10 yıl saklanmaktadır.</p>
 
 <h2>8. KVKK Kapsamındaki Haklarınız</h2>
-<p>KVKK'nın 11. maddesi uyarınca aşağıdaki haklara sahipsiniz:</p>
+<p>KVKK'nin 11. maddesi uyarınca aşağıdaki haklara sahipsiniz:</p>
 <ul>
 <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li>
 <li>Kişisel verileriniz işlenmişse buna ilişkin bilgi talep etme</li>
@@ -144,21 +144,21 @@ E-posta: herteldenshoptr@gmail.com</p>
 <li>Kişisel verilerinizin eksik veya yanlış işlenmiş olması halinde bunların düzeltilmesini isteme</li>
 <li>Kişisel verilerinizin silinmesini veya yok edilmesini isteme</li>
 <li>İşlenen verilerinizin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme</li>
-<li>Kişisel verilerinizin kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme</li>
+<li>Kişisel verilerinizin kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız halinde zararın giderilmesini talep etme</li>
 </ul>
 <p>Haklarınızı kullanmak için herteldenshoptr@gmail.com adresine yazılı başvurabilirsiniz.</p>
 
 <h2>9. Değişiklikler</h2>
 <p>Bu gizlilik politikası gerektiğinde güncellenebilir. Önemli değişiklikler sitede duyurulacaktır.</p>
 <p><em>Son güncelleme: [TARİH]</em></p>
-';
+HTML;
 }
 
 /* =====================================================
    MESAFELİ SATIŞ SÖZLEŞMESİ
 ===================================================== */
 function hy_mesafeli_content() {
-    return '
+    return <<<'HTML'
 <p><em>Bu sözleşme, 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği kapsamında düzenlenmiştir.</em></p>
 
 <h2>MADDE 1 — TARAFLAR</h2>
@@ -228,14 +228,14 @@ Sipariş sırasında girilen ad, soyad ve adres bilgileri geçerlidir.</p>
 <h2>MADDE 12 — YÜRÜRLÜK</h2>
 <p>Bu sözleşme, Alıcı'nın siparişi onaylamasıyla birlikte yürürlüğe girer.</p>
 <p><em>Son güncelleme: [TARİH]</em></p>
-';
+HTML;
 }
 
 /* =====================================================
    İPTAL VE İADE KOŞULLARI
 ===================================================== */
 function hy_iade_content() {
-    return '
+    return <<<'HTML'
 <h2>İptal Koşulları</h2>
 
 <h3>Sipariş İptali</h3>
@@ -292,13 +292,13 @@ function hy_iade_content() {
 
 <h2>Ödeme İadesi</h2>
 <ul>
-<li><strong>Havale/EFT ile ödeme:</strong> İade, bildirdiğiniz IBAN\'a yapılır.</li>
-<li><strong>Kredi kartı ile ödeme:</strong> İade, kartınıza iade edilir (bankanıza göre 3–10 iş günü sürebilir).</li>
+<li><strong>Havale/EFT ile ödeme:</strong> İade, bildirdiginiz IBAN'a yapilir.</li>
+<li><strong>Kredi karti ile ödeme:</strong> İade, kartiniza iade edilir (bankaniza göre 3-10 is günü sürebilir).</li>
 </ul>
 
 <h2>İletişim</h2>
 <p>İptal ve iade işlemleri için:<br>
 E-posta: <a href="mailto:herteldenshoptr@gmail.com">herteldenshoptr@gmail.com</a></p>
 <p><em>Son güncelleme: [TARİH]</em></p>
-';
+HTML;
 }
