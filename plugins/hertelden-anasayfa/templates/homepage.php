@@ -7,9 +7,23 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
 ?>
 <style>
+/* Ana sayfa layout düzeltmesi — Astra wrapper'larını block'a çek */
 .htp-home-title { display:none!important; }
-.ast-article-single,.entry-content,.site-main,#primary,
-.ast-container.site-content-inner { padding:0!important; max-width:100%!important; }
+
+/* Tüm içerik sarmalayıcıları block + tam genişlik */
+#content, .site-content,
+#content .ast-container, .site-content .ast-container,
+#primary, .content-area,
+#main, .site-main,
+.ast-article-single, article.page,
+.entry-content, .post-content {
+  display: block !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
 </style>
 
 <!-- ── HERO ── -->

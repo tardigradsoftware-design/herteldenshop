@@ -278,17 +278,35 @@ a { text-decoration: none; color: inherit; }
   color: var(--c-accent) !important;
 }
 
+/* Dropdown parent — position:relative şart */
+.ast-nav-menu > li,
+.main-navigation ul.menu > li {
+  position: relative !important;
+}
+
 /* Dropdown */
 .ast-nav-menu .sub-menu,
 .main-navigation .sub-menu {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  z-index: 99999 !important;
   background: var(--c-white) !important;
   border: 1px solid var(--c-border) !important;
   border-radius: var(--r-lg) !important;
   box-shadow: var(--sh-lg) !important;
-  min-width: 200px !important;
+  min-width: 220px !important;
   padding: 8px 0 !important;
-  top: 100% !important;
   margin-top: 0 !important;
+  display: none !important;
+}
+
+/* Hover'da dropdown aç */
+.ast-nav-menu > li:hover > .sub-menu,
+.ast-nav-menu > li.focus > .sub-menu,
+.main-navigation ul.menu > li:hover > .sub-menu,
+.main-navigation ul.menu > li.focus > .sub-menu {
+  display: block !important;
 }
 
 .ast-nav-menu .sub-menu a,
