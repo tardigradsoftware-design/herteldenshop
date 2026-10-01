@@ -123,6 +123,8 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: .03em;
   font-family: 'Inter', sans-serif;
   width: 100%;
+  position: relative;
+  z-index: 1000;
 }
 
 /* ═══════════════════════════════════════
@@ -1138,13 +1140,9 @@ add_action( 'wp_footer', function() {
     if (!items.length) return;
 
     function getHeaderBottom() {
-      var bar = document.querySelector('.htp-topbar');
-      var hdr = document.querySelector('#masthead, .main-header-bar, .ast-primary-header-bar');
-      var adminBar = document.getElementById('wpadminbar');
-      var top = adminBar ? adminBar.offsetHeight : 0;
-      if (bar) top += bar.offsetHeight;
-      if (hdr) top += hdr.offsetHeight;
-      return top;
+      var hdr = document.querySelector('#masthead, .main-header-bar, .ast-primary-header-bar, .site-header');
+      if (!hdr) return 64;
+      return Math.round(hdr.getBoundingClientRect().bottom);
     }
 
     items.forEach(function(li){
