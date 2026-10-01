@@ -8,6 +8,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+register_activation_hook( __FILE__, 'hy_create_pages' );
+
 add_action( 'admin_menu', 'hy_admin_menu' );
 function hy_admin_menu() {
     add_management_page(
