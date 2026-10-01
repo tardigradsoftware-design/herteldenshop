@@ -281,6 +281,116 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ═══════════════════════════════════════
+   MEGA MENÜ — L2 kalın başlık, L3 alt liste
+═══════════════════════════════════════ */
+
+/* L1 li — static (panel fixed konumlanıyor) */
+.ast-nav-menu > li,
+.main-navigation ul.menu > li {
+  position: static !important;
+}
+
+/* L1 hover: tam genişlik panel */
+.ast-nav-menu > li.htp-mega-open > .sub-menu,
+.main-navigation ul.menu > li.htp-mega-open > .sub-menu {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  position: fixed !important;
+  left: 0 !important;
+  width: 100vw !important;
+  background: var(--c-white) !important;
+  border-top: 2px solid var(--c-accent) !important;
+  border-bottom: 1px solid var(--c-border) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-radius: 0 !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,.12) !important;
+  padding: 28px 48px 32px !important;
+  gap: 0 !important;
+  z-index: 99999 !important;
+  min-width: unset !important;
+}
+
+/* Panel yokken gizle */
+.ast-nav-menu > li > .sub-menu,
+.main-navigation ul.menu > li > .sub-menu {
+  display: none !important;
+}
+
+/* L2 li — kolon bloğu */
+.ast-nav-menu > li > .sub-menu > li,
+.main-navigation ul.menu > li > .sub-menu > li {
+  display: block !important;
+  flex: 0 0 auto !important;
+  min-width: 160px !important;
+  padding: 0 40px 20px 0 !important;
+  margin: 0 !important;
+  position: static !important;
+  background: none !important;
+  border: none !important;
+}
+
+/* L2 bağlantı = kalın kolon başlığı */
+.ast-nav-menu > li > .sub-menu > li > a,
+.main-navigation ul.menu > li > .sub-menu > li > a {
+  display: block !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: var(--c-ink) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .07em !important;
+  padding: 0 0 8px 0 !important;
+  margin-bottom: 6px !important;
+  border-bottom: 1px solid var(--c-border) !important;
+  height: auto !important;
+  background: none !important;
+  transition: color .12s !important;
+  white-space: nowrap !important;
+}
+.ast-nav-menu > li > .sub-menu > li > a:hover,
+.main-navigation ul.menu > li > .sub-menu > li > a:hover {
+  color: var(--c-accent) !important;
+  background: none !important;
+}
+.ast-nav-menu > li > .sub-menu > li > a::after { display: none !important; }
+
+/* L3 sub-menu — static, her zaman görünür (panel açıkken) */
+.ast-nav-menu > li > .sub-menu > li > .sub-menu,
+.main-navigation ul.menu > li > .sub-menu > li > .sub-menu {
+  display: block !important;
+  position: static !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  min-width: unset !important;
+  width: auto !important;
+  z-index: auto !important;
+}
+
+/* L3 öğe linkleri */
+.ast-nav-menu > li > .sub-menu > li > .sub-menu > li > a,
+.main-navigation ul.menu > li > .sub-menu > li > .sub-menu > li > a {
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: var(--c-ink-2) !important;
+  padding: 4px 0 !important;
+  height: auto !important;
+  background: none !important;
+  transition: color .12s !important;
+  white-space: nowrap !important;
+}
+.ast-nav-menu > li > .sub-menu > li > .sub-menu > li > a:hover,
+.main-navigation ul.menu > li > .sub-menu > li > .sub-menu > li > a:hover {
+  color: var(--c-accent) !important;
+  background: none !important;
+}
+.ast-nav-menu > li > .sub-menu > li > .sub-menu > li > a::after { display: none !important; }
+
+/* ═══════════════════════════════════════
    BREADCRUMB
 ═══════════════════════════════════════ */
 .woocommerce-breadcrumb,
@@ -1029,6 +1139,38 @@ add_action( 'wp_body_open', function() {
     if ( ! is_admin() ) {
         echo '<div class="htp-topbar">Ücretsiz kargo &nbsp;·&nbsp; 500₺ ve üzeri tüm siparişler &nbsp;·&nbsp; Güvenli ödeme</div>';
     }
+} );
+
+// Mega menü JS
+add_action( 'wp_footer', function() {
+    if ( is_admin() ) return;
+    ?>
+<script>
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    var items = document.querySelectorAll('.ast-nav-menu > li, .main-navigation ul.menu > li');
+    if (!items.length) return;
+
+    function headerBottom() {
+      var h = document.querySelector('#masthead, .main-header-bar, .site-header');
+      return h ? Math.round(h.getBoundingClientRect().bottom) : 64;
+    }
+
+    items.forEach(function(li){
+      var sub = li.querySelector(':scope > .sub-menu');
+      if (!sub) return;
+      var t;
+      function open(){ clearTimeout(t); sub.style.top = headerBottom()+'px'; li.classList.add('htp-mega-open'); }
+      function close(){ t = setTimeout(function(){ li.classList.remove('htp-mega-open'); }, 80); }
+      li.addEventListener('mouseenter', open);
+      li.addEventListener('mouseleave', close);
+      sub.addEventListener('mouseenter', function(){ clearTimeout(t); });
+      sub.addEventListener('mouseleave', close);
+    });
+  });
+})();
+</script>
+    <?php
 } );
 
 }
